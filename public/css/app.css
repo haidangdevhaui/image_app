@@ -1,0 +1,94 @@
+.app {
+    margin: 0 auto;
+    margin-top: 50px;
+    /*height: 500px;*/
+    width: 700px;
+    border: 2px solid #407aa4;
+}
+.app-editor {
+    width: 100%;
+    height: 350px;
+}
+.app-editor-content {
+    float: left;
+    /*height: 500px;*/
+    height: 100%;
+    width: 625px;
+}
+.app-editor-control {
+    float: left;
+    width: 75px;
+    height: 100%;
+}
+.app-list-editor {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.app-list-editor li {
+    padding: 5px;
+}
+.app-list-editor li button {
+    width: 60px;
+    height: 48px;
+}
+.app-bottom {
+    height: 70px;
+    border-top: 2px solid #407aa4;
+    padding: 2px;
+}
+.btn-upload {
+    padding: 25px;
+}
+.canvas-container {
+    /*width: 100% !important; height: 100% !important;*/
+}
+.btn-upload, .app-list-editor li button {
+    background: #518ab5;
+    color: #FFF;
+    border: 0px;
+}
+/**
+ * editor
+ */
+
+.app-editor-content {
+    position: relative;
+}
+.editor-upload, .editor-frame, .editor-object {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    /*left: 0;*/
+    /*right: 0;*/
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+}
+.editor-upload {
+    z-index: 1;
+    width: 300px;
+    height: 210px;
+}
+.editor-frame {
+    z-index: 2;
+    width: 240px;
+    height: 150px;
+}
+.editor-object {
+    z-index: 3;
+    width: 300px;
+    height: 210px;
+    background: #FFF;
+    opacity: 0
+}
+.editor-object-rero {
+    width: 100%;
+    height: 100%;
+}
+.editor-frame-image {
+	width: 100%;
+	height: 100%;
+    border: 3px solid #518ab5;
+    border-radius: 10px;
+}
