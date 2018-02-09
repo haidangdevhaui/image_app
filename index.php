@@ -60,6 +60,7 @@
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
 		<!-- <script src="public/js/bootstrap.min.js"></script> -->
 		<!-- <script src="public/js/bootstrap-slider.min.js"></script> -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
 		<script src="public/js/app.js"></script>
 	</body>
 </html>

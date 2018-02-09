@@ -1,7 +1,10 @@
 (function() {
-    var rotate = 0;
     var recoupLeft, recoupTop;
-    var pLeft, pTop;
+    var uploadImgMethod = {
+        top: 0,
+        left: 0,
+        rotate: 0,
+    }
 
     function initDraggable() {
         $('.editor-object').draggable({
@@ -17,14 +20,17 @@
             },
             drag: function(event, ui) {
                 var css = $(this).position();
-                css.transform = rotate + 'deg';
+                css.transform = uploadImgMethod.rotate + 'deg';
                 $('.editor-upload').css(css);
                 //
                 ui.position.left += recoupLeft;
                 ui.position.top += recoupTop;
                 $('.editor-upload').css(ui.position);
-                pLeft = ui.position.left;
-                pTop = ui.position.top;
+                /**
+                 * set position of upload image
+                 */
+                uploadImgMethod.left = ui.position.left;
+                uploadImgMethod.top = ui.position.top;
             },
             stop: function() {
                 $(this).css('opacity', '0');
@@ -34,31 +40,12 @@
             scroll: false
         });
     }
-    // $('.editor-object').resizable({
-    //     aspectRatio: true,
-    //     handles: 'ne, se, sw, nw'
-    // });
-    $('.editor-object-rero')
-        /*.rotatable({
-                handle: $(document.createElement('img')).attr('src', 'public/js/rotate.png'),
-                rotate: function(event, ui) {
-                    // rotate = ui.angle.degrees;
-                    // console.log(rotate);
-                    // $('.editor-upload, .editor-object').css('transform', 'rotate(' + rotate + 'deg)');
-                    // 
-                    if (ui.angle.current < 0) {
-                        var given_angle = ui.angle.current + 2 * Math.PI;
-                    } else {
-                        var given_angle = ui.angle.current;
-                    }
-                    var new_angle = Math.round(given_angle * 180 / Math.PI) + "deg";
-                    $(".editor-upload, .editor-object").css("transform", "rotate(" + new_angle + ")");
-                }
-            })*/
-        .resizable({
-            alsoResize: ".editor-upload, .editor-object"
-        });
-    // $('.editor-upload').resizable();
+    /**
+     * run resizeable
+     */
+    $('.editor-object-rero').resizable({
+        alsoResize: ".editor-upload, .editor-object"
+    });
     /**
      * set position origin
      */
@@ -67,12 +54,12 @@
             top: ($('.app-editor-content').height() - $('.editor-frame').height()) / 2,
             left: ($('.app-editor-content').width() - $('.editor-frame').width()) / 2,
         });
-        pLeft = ($('.app-editor-content').width() - $('.editor-upload').width()) / 2;
-        pTop = ($('.app-editor-content').height() - $('.editor-upload').height()) / 2;
-        rotate = 0;
+        uploadImgMethod.left = ($('.app-editor-content').width() - $('.editor-upload').width()) / 2;
+        uploadImgMethod.top = ($('.app-editor-content').height() - $('.editor-upload').height()) / 2;
+        uploadImgMethod.rotate = 0;
         $('.editor-upload, .editor-object').css({
-            top: pTop,
-            left: pLeft,
+            top: uploadImgMethod.top,
+            left: uploadImgMethod.left,
             transform: 'rotate(0deg)'
         });
     }
@@ -83,38 +70,44 @@
         $('.editor-upload').append('<img style="width: 100%; height: 100%" src="public/images/download.jpeg"/>');
         $('.editor-frame').append('<img class="editor-frame-image" src="public/images/frame.png"/>');
     }
+    /**
+     * init
+     */
     setPosition();
     setImage();
     initDraggable();
+    /**
+     * event
+     */
     $('.btn-restore').on('click', function() {
         setPosition();
     });
     $('.btn-rotate').on('click', function() {
-        rotate++;
-        $('.editor-upload, .editor-object').css('transform', 'rotate(' + (rotate) + 'deg)');
+        uploadImgMethod.rotate++;
+        $('.editor-upload, .editor-object').css('transform', 'rotate(' + (uploadImgMethod.rotate) + 'deg)');
     });
     $('.btn-move-left').on('click', function() {
-        pLeft--;
+        uploadImgMethod.left--;
         $('.editor-upload, .editor-object').css({
-            left: pLeft
+            left: uploadImgMethod.left
         });
     });
     $('.btn-move-right').on('click', function() {
-        pLeft++;
+        uploadImgMethod.left++;
         $('.editor-upload, .editor-object').css({
-            left: pLeft
+            left: uploadImgMethod.left
         });
     });
     $('.btn-move-top').on('click', function() {
-        pTop--;
+        uploadImgMethod.top--;
         $('.editor-upload, .editor-object').css({
-            top: pTop
+            top: uploadImgMethod.top
         });
     });
     $('.btn-move-bottom').on('click', function() {
-        pTop++;
+        uploadImgMethod.top++;
         $('.editor-upload, .editor-object').css({
-            top: pTop
+            top: uploadImgMethod.top
         });
     });
     $('#slider').slider({
@@ -122,8 +115,11 @@
         min: 0,
         max: 360,
         slide: function(event, ui) {
-            rotate = ui.value;
-            $('.editor-upload, .editor-object').css('transform', 'rotate(' + (rotate) + 'deg)');
+            uploadImgMethod.rotate = ui.value;
+            $('.editor-upload, .editor-object').css('transform', 'rotate(' + (uploadImgMethod.rotate) + 'deg)');
         }
+    });
+    $('.btn-upload').on('click', function() {
+        console.log(uploadImgMethod);
     });
 })();
