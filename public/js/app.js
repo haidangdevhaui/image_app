@@ -6,6 +6,13 @@
         rotate: 0,
     }
 
+// Prepare extra handles
+  var nw = $("<div>", {
+    class: "ui-rotatable-handle"
+  });
+  var ne = nw.clone();
+  var se = nw.clone();
+
     function initDraggable() {
         $('.editor-object').draggable({
             start: function(event, ui) {
@@ -33,19 +40,43 @@
                 uploadImgMethod.top = ui.position.top;
             },
             stop: function() {
-                $(this).css('opacity', '0');
+                $(this).css('opacity', '1');
             },
             cursor: "move",
             containment: "#editor-content",
-            scroll: false
+            scroll: false,
+	    cancel: ".ui-rotatable-handle"
         });
     }
     /**
      * run resizeable
      */
     $('.editor-object-rero').resizable({
-        alsoResize: ".editor-upload, .editor-object"
+        aspectRatio: true,
+        alsoResize: ".editor-upload, .editor-object",
+	classes: {
+	    "ui-resizable": "highlight"
+	}
+    }).rotatable({
+        start: function(event, ui) {
+            },
+        rotate: function(event, ui) {
+		$('.editor-upload').css({
+                transform: 'rotate('+ui.angle.current+'rad)'
+            });
+        },
+        stop: function(event, ui) {
+            },
     });
+
+$('.editor-object-rero div.ui-rotatable-handle').addClass("ui-rotatable-handle-sw");
+  nw.addClass("ui-rotatable-handle-nw");
+  ne.addClass("ui-rotatable-handle-ne");
+  se.addClass("ui-rotatable-handle-se");
+$(".editor-object-rero").append(nw, ne, se);
+$(".editor-object-rero div[class*='ui-rotatable-handle-']").bind("mousedown", function(e) {
+    $('.editor-object-rero').rotatable("instance").startRotate(e);
+  });
     /**
      * set position origin
      */
@@ -110,15 +141,15 @@
             top: uploadImgMethod.top
         });
     });
-    $('#slider').slider({
-        range: true,
-        min: 0,
-        max: 360,
-        slide: function(event, ui) {
-            uploadImgMethod.rotate = ui.value;
-            $('.editor-upload, .editor-object').css('transform', 'rotate(' + (uploadImgMethod.rotate) + 'deg)');
-        }
-    });
+    //$('#slider').slider({
+        //range: true,
+        //min: 0,
+        //max: 360,
+        //slide: function(event, ui) {
+            //uploadImgMethod.rotate = ui.value;
+            //$('.editor-upload').css('transform', 'rotate(' + (uploadImgMethod.rotate) + 'deg)');
+        //}
+    //});
     $('.btn-upload').on('click', function() {
         console.log(uploadImgMethod);
     });

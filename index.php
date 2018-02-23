@@ -45,6 +45,7 @@
 							<div class="editor-object">
 								<div class="editor-object-rero"></div>
 							</div>
+ <!--<div class="editor-object-rero"></div>-->
 						</div>
 					</div>
 					<div class="app-bottom">
