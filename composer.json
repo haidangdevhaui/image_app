@@ -6,5 +6,7 @@
             "email": "haidangdevhaui@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "intervention/image": "^2.4"
+    }
 }

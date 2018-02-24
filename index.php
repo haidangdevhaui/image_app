@@ -7,8 +7,6 @@
 		<title>Image app</title>
 		<link rel="stylesheet" href="public/css/app.css">
 		<link rel="stylesheet" href="public/css/jquery-ui.min.css">
-		<link rel="stylesheet" href="public/css/bootstrap-slider.min.css">
-		<!-- <link rel="stylesheet" href="public/css/bootstrap.min.css"> -->
 	</head>
 	<body>
 		<div class="row">
@@ -45,23 +43,20 @@
 							<div class="editor-object">
 								<div class="editor-object-rero"></div>
 							</div>
- <!--<div class="editor-object-rero"></div>-->
 						</div>
 					</div>
 					<div class="app-bottom">
 						<button class="btn-upload">Upload</button>
+						<button class="btn-create">Create</button>
+						<input type="file" style="display: none;" id="file-input">
 					</div>
 				</div>
 			</div>
 		</div>
-		<img style="display: none;" src="public/images/upload.png" id="image-upload" alt="">
 		<!-- jQuery -->
 		<script src="public/js/jquery.min.js"></script>
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
-		<!-- <script src="public/js/bootstrap.min.js"></script> -->
-		<!-- <script src="public/js/bootstrap-slider.min.js"></script> -->
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/camanjs/4.0.0/caman.full.min.js"></script>
 		<script src="public/js/app.js"></script>
 	</body>
 </html>
