@@ -2,16 +2,16 @@
     var recoupLeft = 0;
     var recoupTop = 0;
     var uploadImgAttr = {
-        width: 300,
-        height: 210,
+        width: 380,
+        height: 270,
         top: 0,
         left: 0,
         rotate: 0,
         image: 'public/images/default.jpg'
     }
     var frameAttr = {
-        width: 240,
-        height: 150,
+        width: 325,
+        height: 204,
         image: 'public/images/frame_for_front.png'
     }
     // Prepare extra handles
@@ -20,6 +20,10 @@
     });
     var ne = nw.clone();
     var se = nw.clone();
+    $('.editor-object').css({
+        width: uploadImgAttr.width,
+        height: uploadImgAttr.height,
+    });
 
     function initDraggable() {
         $('.editor-object').draggable({
@@ -77,14 +81,29 @@
             uploadImgAttr.rotate = ui.angle.degrees;
         },
     });
+    /**
+     * add square icon for rotate
+     */
     $('.editor-object-rero div.ui-rotatable-handle').addClass("ui-rotatable-handle-sw");
-    nw.addClass("ui-rotatable-handle-nw");
-    ne.addClass("ui-rotatable-handle-ne");
-    se.addClass("ui-rotatable-handle-se");
+    nw.addClass("ui-rotatable-handle-nw fa fa-square");
+    ne.addClass("ui-rotatable-handle-ne fa fa-square");
+    se.addClass("ui-rotatable-handle-se fa fa-square");
+    $(".ui-rotatable-handle-sw").addClass('fa fa-square');
     $(".editor-object-rero").append(nw, ne, se);
     $(".editor-object-rero div[class*='ui-rotatable-handle-']").bind("mousedown", function(e) {
         $('.editor-object-rero').rotatable("instance").startRotate(e);
     });
+    /**
+     * add bar for resize
+     */
+    // var n = $('.ui-resizable-handle.ui-resizable-e').clone();
+    // var w = n.clone();
+    // n.addClass('ui-resizable-n');
+    // w.addClass('ui-resizable-w');
+    // $('.ui-resizable').append('<div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div>');
+    // $(".editor-object-rero div[class*='ui-resizable-handle']").bind("mousedown", function(e) {
+    //     $('.editor-object-rero').resizable("instance");
+    // });
     /**
      * set position origin
      */
@@ -108,7 +127,8 @@
     function setImage() {
         $('.editor-upload').append('<img style="width: 100%; height: 100%" src="' + uploadImgAttr.image + '"/>').css({
             width: uploadImgAttr.width,
-            height: uploadImgAttr.height
+            height: uploadImgAttr.height,
+            border: '2px solid #ea0437'
         });
         $('.editor-frame').append('<img class="editor-frame-image" src="' + frameAttr.image + '"/>').css({
             width: frameAttr.width,
@@ -130,6 +150,9 @@
             height: uploadImgAttr.height
         });
         setPosition();
+        $('.file-output').html('').removeAttr('title');
+        $('.file-name').val('');
+        $('.file-ext').val('jpg');
         $('.editor-object-rero').css('transform', 'rotate(' + 0 + 'deg)').data('uiRotatable').angle(0);
     });
     $('.btn-rotate').on('click', function() {
@@ -195,6 +218,9 @@
         if ($('.file-name').val()) {
             formData.append('file_name', $('.file-name').val());
         }
+        if ($('.file-ext').val()) {
+            formData.append('file_ext', $('.file-ext').val());
+        }
         if (uploadImgAttr.imageObj) {
             formData.append('file', uploadImgAttr.imageObj);
         }
@@ -211,9 +237,17 @@
                 if (res.error) {
                     return alert(res.error);
                 }
+                var fileName = res.path.replace('public/images/created/', '');
+                if (fileName.length >= 14) {
+                    fileName = fileName.substr(0, 11) + '...';
+                }
+                $('.file-output').html('Last output:' + fileName).attr('title', res.path);
                 return window.open(res.path);
             }
         })
+    });
+    $('button').click(function() {
+        $('.file-output').html('');
     });
     $('.btn-upload').click(function() {
         $('#file-input').click();

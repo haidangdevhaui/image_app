@@ -53,13 +53,11 @@
     /*border: 1px solid transparent;*/
 }
 button:focus {
-  /*background: #0a5085 !important;*/
+    /*background: #0a5085 !important;*/
 }
-
-.file-name {
-  padding: 5px;
+.file-name, .file-ext {
+    padding: 5px;
 }
-
 /**
  * editor
  */
@@ -79,8 +77,6 @@ button:focus {
 }
 .editor-upload {
     z-index: 1;
-    /*width: 300px;
-    height: 210px;*/
 }
 .editor-frame {
     z-index: 2;
@@ -89,8 +85,6 @@ button:focus {
 }
 .editor-object {
     z-index: 3;
-    width: 300px;
-    height: 210px;
     background: initial;
     opacity: 1;
 }
@@ -99,36 +93,48 @@ button:focus {
     height: 100%;
 }
 .editor-frame-image {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
     border: 3px solid #518ab5;
     border-radius: 10px;
 }
+/* icon for rotate */
+
 .ui-rotatable-handle {
-  background: url("https://cdn.jsdelivr.net/jquery.ui.rotatable/1.0.1/rotate.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  height: 25px;
-  width: 25px;
-  position: absolute;
+    height: 25px;
+    width: 25px;
+    position: absolute;
 }
-
+.ui-rotatable-handle {
+    color: #ea0437;
+}
 .ui-rotatable-handle-sw {
-  bottom: -27px;
-  left: -27px;
+    bottom: -20px;
+    left: -10px;
 }
-
 .ui-rotatable-handle-nw {
-  top: -27px;
-  left: -27px;
+    top: -10px;
+    left: -10px;
 }
-
 .ui-rotatable-handle-se {
-  bottom: -27px;
-  right: -27px;
+    bottom: -20px;
+    right: -20px;
 }
-
 .ui-rotatable-handle-ne {
-  top: -27px;
-  right: -27px;
+    top: -10px;
+    right: -22px;
 }
+/* bar for resize */
+
+/*.ui-resizable-n {
+    border-top: 2px solid #ea0437;
+}
+.ui-resizable-e {
+    border-right: 2px solid #ea0437;
+}
+.ui-resizable-w {
+    border-left: 2px solid #ea0437;
+}
+.ui-resizable-s {
+    border-bottom: 2px solid #ea0437;
+}*/

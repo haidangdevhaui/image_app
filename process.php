@@ -13,6 +13,13 @@ class ImageProcess
     protected $outputDirPath = 'public/images/created';
 
     /**
+     *  output image property
+     */
+    protected $outputImageWidth = 325;
+    protected $outputImageHeight = 204;
+    protected $outputImageFormat = 'jpg';
+
+    /**
      * defined output image filename
      * @var string
      */
@@ -128,9 +135,13 @@ class ImageProcess
      */
     private function crop()
     {
+        // $this->backgroundImage->crop(
+        //     (Int) $this->request['frame']['width'],
+        //     (Int) $this->request['frame']['height']
+        // );
         $this->backgroundImage->crop(
-            (Int) $this->request['frame']['width'],
-            (Int) $this->request['frame']['height']
+            (Int)$this->outputImageWidth,
+            (Int)$this->outputImageHeight
         );
     }
 
@@ -175,14 +186,17 @@ class ImageProcess
         if ($increment) {
             $plus = '(' . $increment . ')';
         }
+        if (isset($this->request['file_ext']) && preg_match('/(jpe?g|png|gif|tif|bmp|ico|psd|webp)/', $this->request['file_ext'])) {
+            $this->outputImageFormat = $this->request['file_ext'];
+        }
         if (isset($this->request['file_name']) && $this->request['file_name']) {
-            $this->outputImageFileName = $this->outputDirPath . '/' . trim($this->request['file_name']) . $plus . '.jpg';
+            $this->outputImageFileName = $this->outputDirPath . '/' . trim($this->request['file_name']) . $plus . '.' . $this->outputImageFormat;
             if (file_exists($this->outputImageFileName)) {
                 $increment++;
                 $this->generateImageFileName($increment);
             }
         } else {
-            $this->outputImageFileName = $this->outputDirPath . '/' . time() . '.jpg';
+            $this->outputImageFileName = $this->outputDirPath . '/' . time() . '.' . $this->outputImageFormat;
         }
     }
 }
