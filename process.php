@@ -60,8 +60,7 @@ class ImageProcess
             $this->request = $_POST;
             if (!is_dir($this->outputDirPath)) {
                 mkdir($this->outputDirPath);
-                // chmod($this->outputDirPath, 755);
-                chmod($this->outputDirPath, 777);
+                chmod($this->outputDirPath, 755);
             }
         } else {
             die;
