@@ -10,7 +10,7 @@ class ImageProcess
      * defined output dir path
      * @var string
      */
-    protected $outputDirPath = 'public/images';
+    protected $outputDirPath = 'public/images/created';
 
     /**
      * defined output image filename
@@ -34,13 +34,13 @@ class ImageProcess
      * default frame image
      * @var string
      */
-    protected $defaultFrameImage = 'public/images/frame.png';
+    protected $defaultFrameImage = 'public/images/frame_for_server.png';
 
     /**
      * default upload image
      * @var string
      */
-    protected $defaultUploadImage = 'public/images/upload.jpeg';
+    protected $defaultUploadImage = 'public/images/default.jpg';
 
     /**
      * defined upload image
@@ -58,6 +58,11 @@ class ImageProcess
     {
         if (!empty($_POST)) {
             $this->request = $_POST;
+            if (!is_dir($this->outputDirPath)) {
+                mkdir($this->outputDirPath);
+                // chmod($this->outputDirPath, 755);
+                chmod($this->outputDirPath, 777);
+            }
         } else {
             die;
         }
@@ -136,15 +141,20 @@ class ImageProcess
      */
     public function save()
     {
-        $this->setBackgroundImage();
-        $this->setFrameImage();
-        $this->setUploadImage();
-        $this->insertUploadImage();
-        $this->insertFrameImage();
-        $this->crop();
-        $this->outputImageFileName = $this->outputDirPath . '/' . time() . '.jpg';
-        $this->backgroundImage->save($this->outputImageFileName);
-        return $this;
+        try {
+            $this->setBackgroundImage();
+            $this->setFrameImage();
+            $this->setUploadImage();
+            $this->insertUploadImage();
+            $this->insertFrameImage();
+            $this->crop();
+            $this->generateImageFileName();
+            $this->backgroundImage->save($this->outputImageFileName);
+            return $this;
+        } catch (\Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);die;
+        }
+        
     }
 
     /**
@@ -156,10 +166,25 @@ class ImageProcess
         return $this->outputImageFileName;
     }
 
-    public function download()
+    /**
+     * generate output file name
+     * @param  integer $increment
+     */
+    private function generateImageFileName($increment = 0)
     {
-        header("Content-Type: application/force-download"); 
-        header("Content-Disposition: attachment; filename=\"".$this->outputImageFileName."\";" ); 
+        $plus = '';
+        if ($increment) {
+            $plus = '(' . $increment . ')';
+        }
+        if (isset($this->request['file_name']) && $this->request['file_name']) {
+            $this->outputImageFileName = $this->outputDirPath . '/' . trim($this->request['file_name']) . $plus . '.jpg';
+            if (file_exists($this->outputImageFileName)) {
+                $increment++;
+                $this->generateImageFileName($increment);
+            }
+        } else {
+            $this->outputImageFileName = $this->outputDirPath . '/' . time() . '.jpg';
+        }
     }
 }
 

@@ -7,12 +7,12 @@
         top: 0,
         left: 0,
         rotate: 0,
-        image: 'public/images/upload.jpeg'
+        image: 'public/images/default.jpg'
     }
     var frameAttr = {
         width: 240,
         height: 150,
-        image: 'public/images/frame.png'
+        image: 'public/images/frame_for_front.png'
     }
     // Prepare extra handles
     var nw = $("<div>", {
@@ -162,7 +162,7 @@
     });
     $('.btn-create').on('click', function() {
         var btnCreate = $(this);
-        btnCreate.html('Creating...').attr('disabled', '');
+        btnCreate.html('<i class="fa fa-spinner fa-spin fa-2x"></i>').attr('disabled', '');
         var requestData = {
             background: {
                 width: $('.app-editor-content').width(),
@@ -192,6 +192,9 @@
         formData.append('upload[left]', $('.editor-upload').position().left);
         formData.append('upload[rotate]', uploadImgAttr.rotate);
         formData.append('upload[image]', uploadImgAttr.image);
+        if ($('.file-name').val()) {
+            formData.append('file_name', $('.file-name').val());
+        }
         if (uploadImgAttr.imageObj) {
             formData.append('file', uploadImgAttr.imageObj);
         }
@@ -203,8 +206,12 @@
             contentType: false,
             processData: false,
             success: function(res) {
-                btnCreate.html('Create').removeAttr('disabled');
-                window.open(JSON.parse(res).path);
+                btnCreate.html('<i class="fa fa-save fa-2x">').removeAttr('disabled');
+                res = JSON.parse(res);
+                if (res.error) {
+                    return alert(res.error);
+                }
+                return window.open(res.path);
             }
         })
     });

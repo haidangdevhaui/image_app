@@ -38,8 +38,8 @@
     padding: 2px;
 }
 .btn-create, .btn-upload {
-    padding: 25px;
-    width: 100px;
+    padding: 22px;
+    /*width: 100px;*/
 }
 .canvas-container {
     /*width: 100% !important; height: 100% !important;*/
@@ -47,8 +47,19 @@
 .btn-create, .btn-upload, .app-list-editor li button {
     background: #518ab5;
     color: #FFF;
-    border: 0px;
+    border: 0;
+    border-radius: 4px;
+    /*touch-action: manipulation;*/
+    /*border: 1px solid transparent;*/
 }
+button:focus {
+  /*background: #0a5085 !important;*/
+}
+
+.file-name {
+  padding: 5px;
+}
+
 /**
  * editor
  */
