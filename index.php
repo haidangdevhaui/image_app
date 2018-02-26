@@ -1,19 +1,21 @@
+<?php
+	require_once 'helper.php';
+	$min = app_config('APP_ENV') == 'production' ? '.min' : '';
+?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Image app</title>
+		<title><?= app_config('APP_TITLE', 'Image App') ?></title>
 		<link rel="stylesheet" href="public/css/font-awesome.min.css">
 		<link rel="stylesheet" href="public/css/jquery-ui.min.css">
-		<link rel="stylesheet" href="public/css/app.css">
+		<link rel="stylesheet" href="public/css/app<?= $min ?>.css">
 	</head>
 	<body>
 		<div class="row">
 			<div class="container">
-
-				<div id="slider"></div>
 				<div class="app">
 					<div class="app-editor">
 						<div class="app-editor-control">
@@ -71,6 +73,6 @@
 		<script src="public/js/jquery.min.js"></script>
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
-		<script src="public/js/app.js"></script>
+		<script src="public/js/app<?= $min ?>.js"></script>
 	</body>
 </html>
