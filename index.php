@@ -77,6 +77,6 @@
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
 		<script src="public/js/download.js"></script>
-		<script src="public/js/app.min.js"></script>
+		<script src="public/js/app.js"></script>
 	</body>
 </html>

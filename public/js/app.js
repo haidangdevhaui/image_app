@@ -254,7 +254,7 @@
                     fileName = fileName.substr(0, 15) + '...';
                 }
                 $('.file-output').html('<i class="fa fa-file-photo-o"></i> ' + fileName).attr('title', res.path);
-                return $('.file-preview-dialog').html('<img src="' + res.path + '" style="width: 100%; height: 100%"/>').dialog({
+                return $('.file-preview-dialog').html('<img src="' + res.path + '" style="width: 100%; height: 100%; border-radius: 10px;"/>').dialog({
                     resizable: false,
                     draggable: false,
                     width: uploadImgAttr.width,
