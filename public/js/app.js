@@ -78,7 +78,7 @@
             });
         },
         stop: function(event, ui) {
-            uploadImgAttr.rotate = ui.angle.degrees;
+            uploadImgAttr.rotate = ui.angle.current < 0 ? ui.angle.degrees : -ui.angle.degrees;
         },
     });
     /**

@@ -113,7 +113,7 @@ class ImageProcess
                 $this->zoom($this->request['upload']['width']),
                 $this->zoom($this->request['upload']['height'])
             )
-            ->rotate(-(Float) $this->request['upload']['rotate']);
+            ->rotate((Float) $this->request['upload']['rotate']);
     }
 
     /**
