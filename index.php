@@ -1,17 +1,13 @@
-<?php
-	require_once 'helper.php';
-	$min = app_config('APP_ENV') == 'production' ? '.min' : '';
-?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title><?= app_config('APP_TITLE', 'Image App') ?></title>
+		<title>Image App</title>
 		<link rel="stylesheet" href="public/css/font-awesome.min.css">
 		<link rel="stylesheet" href="public/css/jquery-ui.min.css">
-		<link rel="stylesheet" href="public/css/app<?= $min ?>.css">
+		<link rel="stylesheet" href="public/css/app.css">
 	</head>
 	<body>
 		<div class="row">
@@ -63,16 +59,24 @@
 							<option value="psd">PSD</option>
 							<option value="webp">WEBP</option>
 						</select>
+						<select class="file-zoom">
+							<option value="2" selected>2x</option>
+							<option value="4">4x</option>
+							<option value="8">8x</option>
+						</select>
 						<span class="file-output"></span>
 						<input type="file" style="display: none;" id="file-input">
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="file-preview-dialog"></div>
+		<a class="file-download" download hidden></a>
 		<!-- jQuery -->
 		<script src="public/js/jquery.min.js"></script>
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
-		<script src="public/js/app<?= $min ?>.js"></script>
+		<script src="public/js/download.js"></script>
+		<script src="public/js/app.js"></script>
 	</body>
 </html>

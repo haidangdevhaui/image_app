@@ -153,6 +153,7 @@
         $('.file-output').html('').removeAttr('title');
         $('.file-name').val('');
         $('.file-ext').val('jpg');
+        $('.file-zoom').val('2');
         $('.editor-object-rero').css('transform', 'rotate(' + 0 + 'deg)').data('uiRotatable').angle(0);
     });
     $('.btn-rotate').on('click', function() {
@@ -221,6 +222,9 @@
         if ($('.file-ext').val()) {
             formData.append('file_ext', $('.file-ext').val());
         }
+        if ($('.file-zoom').val()) {
+            formData.append('file_zoom', $('.file-zoom').val());
+        }
         if (uploadImgAttr.imageObj) {
             formData.append('file', uploadImgAttr.imageObj);
         }
@@ -235,14 +239,59 @@
                 btnCreate.html('<i class="fa fa-save fa-2x">').removeAttr('disabled');
                 res = JSON.parse(res);
                 if (res.error) {
-                    return alert(res.error);
+                    return $('.file-preview-dialog').html('<p style="text-align:center">' + res.error + '</p>').dialog({
+                        modal: true,
+                        buttons: {
+                            Ok: function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
                 }
                 var fileName = res.path.replace('public/images/created/', '');
-                if (fileName.length >= 14) {
-                    fileName = fileName.substr(0, 11) + '...';
+                var fileDownload = fileName;
+                if (fileName.length >= 18) {
+                    fileName = fileName.substr(0, 15) + '...';
                 }
-                $('.file-output').html('Last output:' + fileName).attr('title', res.path);
-                return window.open(res.path);
+                $('.file-output').html('<i class="fa fa-file-photo-o"></i> ' + fileName).attr('title', res.path);
+                return $('.file-preview-dialog').html('<img src="' + res.path + '" style="width: 100%; height: 100%"/>').dialog({
+                    resizable: false,
+                    draggable: false,
+                    width: uploadImgAttr.width,
+                    modal: true,
+                    position: {
+                        my: "center",
+                        at: "top",
+                        of : '.app-editor-content'
+                    },
+                    buttons: {
+                        download: {
+                            text: 'Download',
+                            click: function() {
+                                var x = new XMLHttpRequest();
+                                x.open("GET", res.path, true);
+                                x.responseType = 'blob';
+                                x.onload = function(e) {
+                                    download(x.response, fileDownload);
+                                    $('.file-preview-dialog').dialog("close");
+                                }
+                                x.send();
+                            }
+                        },
+                        delete: {
+                            text: 'Delete',
+                            click: function() {
+                                $.ajax({
+                                    url: 'delete.php?path=' + res.path,
+                                    type: 'GET',
+                                    success: function() {
+                                        $('.file-preview-dialog').dialog("close");
+                                    }
+                                })
+                            }
+                        }
+                    }
+                });
             }
         })
     });

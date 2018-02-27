@@ -15,8 +15,9 @@ class ImageProcess
     /**
      *  output image property
      */
-    protected $outputImageWidth = 325;
+    protected $outputImageWidth  = 325;
     protected $outputImageHeight = 204;
+    protected $outputImageZoom   = 2;
     protected $outputImageFormat = 'jpg';
 
     /**
@@ -80,8 +81,8 @@ class ImageProcess
     private function setBackgroundImage()
     {
         $this->backgroundImage = Image::canvas(
-            $this->request['background']['width'],
-            $this->request['background']['height']
+            $this->zoom($this->request['background']['width']),
+            $this->zoom($this->request['background']['height'])
         );
     }
 
@@ -91,7 +92,10 @@ class ImageProcess
     private function setFrameImage()
     {
         $this->frameImage = Image::make($this->defaultFrameImage)
-            ->resize($this->request['frame']['width'], $this->request['frame']['height']);
+            ->resize(
+                $this->zoom($this->request['frame']['width']),
+                $this->zoom($this->request['frame']['height'])
+            );
     }
 
     /**
@@ -105,7 +109,10 @@ class ImageProcess
             $uploadImg = $this->defaultUploadImage;
         }
         $this->uploadImage = Image::make($uploadImg)
-            ->resize($this->request['upload']['width'], $this->request['upload']['height'])
+            ->resize(
+                $this->zoom($this->request['upload']['width']),
+                $this->zoom($this->request['upload']['height'])
+            )
             ->rotate(-(Float) $this->request['upload']['rotate']);
     }
 
@@ -117,8 +124,8 @@ class ImageProcess
         $this->backgroundImage->insert(
             $this->uploadImage,
             'top-left',
-            (Int) $this->request['upload']['left'],
-            (Int) $this->request['upload']['top']
+            $this->zoom((Int) $this->request['upload']['left']),
+            $this->zoom((Int) $this->request['upload']['top'])
         );
     }
 
@@ -135,13 +142,9 @@ class ImageProcess
      */
     private function crop()
     {
-        // $this->backgroundImage->crop(
-        //     (Int) $this->request['frame']['width'],
-        //     (Int) $this->request['frame']['height']
-        // );
         $this->backgroundImage->crop(
-            (Int)$this->outputImageWidth,
-            (Int)$this->outputImageHeight
+            $this->zoom((Int) $this->outputImageWidth),
+            $this->zoom((Int) $this->outputImageHeight)
         );
     }
 
@@ -152,19 +155,21 @@ class ImageProcess
     public function save()
     {
         try {
+            $this->setZoom();
             $this->setBackgroundImage();
             $this->setFrameImage();
             $this->setUploadImage();
             $this->insertUploadImage();
             $this->insertFrameImage();
             $this->crop();
+            $this->setExtension();
             $this->generateImageFileName();
             $this->backgroundImage->save($this->outputImageFileName);
             return $this;
         } catch (\Exception $e) {
             echo json_encode(['error' => $e->getMessage()]);die;
         }
-        
+
     }
 
     /**
@@ -186,9 +191,6 @@ class ImageProcess
         if ($increment) {
             $plus = '(' . $increment . ')';
         }
-        if (isset($this->request['file_ext']) && preg_match('/(jpe?g|png|gif|tif|bmp|ico|psd|webp)/', $this->request['file_ext'])) {
-            $this->outputImageFormat = $this->request['file_ext'];
-        }
         if (isset($this->request['file_name']) && $this->request['file_name']) {
             $this->outputImageFileName = $this->outputDirPath . '/' . trim($this->request['file_name']) . $plus . '.' . $this->outputImageFormat;
             if (file_exists($this->outputImageFileName)) {
@@ -199,7 +201,38 @@ class ImageProcess
             $this->outputImageFileName = $this->outputDirPath . '/' . time() . '.' . $this->outputImageFormat;
         }
     }
-}
 
-// (new ImageProcess)->save()->download();die;
+    /**
+     * set output image zoom
+     */
+    private function setZoom()
+    {
+        if (isset($this->request['file_zoom']) && (Int) $this->request['file_zoom'] !== 0) {
+            $this->outputImageZoom = $this->request['file_zoom'];
+        }
+    }
+
+    /**
+     * set output image extension
+     */
+    private function setExtension()
+    {
+        if (isset($this->request['file_ext']) && preg_match('/(jpe?g|png|gif|tif|bmp|ico|psd|webp)/', $this->request['file_ext'])) {
+            $this->outputImageFormat = $this->request['file_ext'];
+        }
+    }
+
+    /**
+     * zoom
+     * @param  integer $size
+     * @return integer
+     */
+    private function zoom($size, $zoom = 1)
+    {
+        if ($zoom !== 1 && is_integer($zoom)) {
+            return $size * $zoom;
+        }
+        return $size * $this->outputImageZoom;
+    }
+}
 echo json_encode(['path' => (new ImageProcess)->save()->getOutputImagePath()]);die;
