@@ -7,7 +7,7 @@
 		<title>Image App</title>
 		<link rel="stylesheet" href="public/css/font-awesome.min.css">
 		<link rel="stylesheet" href="public/css/jquery-ui.min.css">
-		<link rel="stylesheet" href="public/css/app.css">
+		<link rel="stylesheet" href="public/css/app.min.css">
 	</head>
 	<body>
 		<div class="row">
@@ -77,6 +77,6 @@
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
 		<script src="public/js/download.js"></script>
-		<script src="public/js/app.js"></script>
+		<script src="public/js/app.min.js"></script>
 	</body>
 </html>
