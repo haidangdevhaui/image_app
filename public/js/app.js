@@ -94,17 +94,6 @@
         $('.editor-object-rero').rotatable("instance").startRotate(e);
     });
     /**
-     * add bar for resize
-     */
-    // var n = $('.ui-resizable-handle.ui-resizable-e').clone();
-    // var w = n.clone();
-    // n.addClass('ui-resizable-n');
-    // w.addClass('ui-resizable-w');
-    // $('.ui-resizable').append('<div class="ui-resizable-handle ui-resizable-n" style="z-index: 90;"></div><div class="ui-resizable-handle ui-resizable-w" style="z-index: 90;"></div>');
-    // $(".editor-object-rero div[class*='ui-resizable-handle']").bind("mousedown", function(e) {
-    //     $('.editor-object-rero').resizable("instance");
-    // });
-    /**
      * set position origin
      */
     function setPosition() {
@@ -136,6 +125,18 @@
         });
     }
     /**
+     * delete image
+     */
+    function deleteImage(path) {
+        return $.ajax({
+            url: 'delete.php?path=' + path,
+            type: 'GET',
+            success: function() {
+                $('.file-preview-dialog').dialog("close");
+            }
+        });
+    }
+    /**
      * init
      */
     setImage();
@@ -150,6 +151,7 @@
             height: uploadImgAttr.height
         });
         setPosition();
+        $('.editor-upload').find('img').attr('src', 'public/images/default.jpg');
         $('.file-output').html('').removeAttr('title');
         $('.file-name').val('');
         $('.file-ext').val('jpg');
@@ -236,7 +238,7 @@
             contentType: false,
             processData: false,
             success: function(res) {
-                btnCreate.html('<i class="fa fa-save fa-2x">').removeAttr('disabled');
+                btnCreate.html('<i class="fa fa-eye fa-2x">').removeAttr('disabled');
                 res = JSON.parse(res);
                 if (res.error) {
                     return $('.file-preview-dialog').html('<p style="text-align:center">' + res.error + '</p>').dialog({
@@ -248,12 +250,7 @@
                         }
                     });
                 }
-                var fileName = res.path.replace('public/images/created/', '');
-                var fileDownload = fileName;
-                if (fileName.length >= 18) {
-                    fileName = fileName.substr(0, 15) + '...';
-                }
-                $('.file-output').html('<i class="fa fa-file-photo-o"></i> ' + fileName).attr('title', res.path);
+                var fileName = res.path.replace(/public\/images\/(created|temp)\//g, '');
                 return $('.file-preview-dialog').html('<img src="' + res.path + '" style="width: 100%; height: 100%; border-radius: 10px;"/>').dialog({
                     resizable: false,
                     draggable: false,
@@ -272,7 +269,8 @@
                                 x.open("GET", res.path, true);
                                 x.responseType = 'blob';
                                 x.onload = function(e) {
-                                    download(x.response, fileDownload);
+                                    download(x.response, fileName);
+                                    deleteImage(res.path);
                                     $('.file-preview-dialog').dialog("close");
                                 }
                                 x.send();
@@ -281,15 +279,28 @@
                         delete: {
                             text: 'Delete',
                             click: function() {
+                                deleteImage(res.path)
+                            }
+                        },
+                        save: {
+                            text: 'Save',
+                            click: function() {
                                 $.ajax({
-                                    url: 'delete.php?path=' + res.path,
+                                    url: 'save.php?path=' + res.path,
                                     type: 'GET',
                                     success: function() {
+                                        if (fileName.length >= 18) {
+                                            fileName = fileName.substr(0, 15) + '...';
+                                        }
+                                        $('.file-output').html('<i class="fa fa-file-photo-o"></i> ' + fileName).attr('title', res.path.replace(/\/temp\//g, '/created/'));
                                         $('.file-preview-dialog').dialog("close");
                                     }
                                 })
                             }
-                        }
+                        },
+                    },
+                    close: function(event, ui) {
+                        deleteImage(res.path);
                     }
                 });
             }

@@ -10,7 +10,7 @@ class ImageProcess
      * defined output dir path
      * @var string
      */
-    protected $outputDirPath = 'public/images/created';
+    protected $outputDirPath = 'public/images/temp';
 
     /**
      *  output image property

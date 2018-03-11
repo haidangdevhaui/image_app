@@ -46,7 +46,7 @@
 					</div>
 					<div class="app-bottom">
 						<button class="btn-upload" title="Choose a image file"><i class="fa fa-upload fa-2x"></i></button>
-						<button class="btn-create" title="Save image"><i class="fa fa-save fa-2x"></i></button>
+						<button class="btn-create" title="Preview image"><i class="fa fa-eye fa-2x"></i></button>
 						Save as name:
 						<input type="text" class="file-name" placeholder="ex: image">
 						<select class="file-ext">
