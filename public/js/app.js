@@ -8,10 +8,6 @@
         rotate: 0,
         image: 'public/images/default.jpg'
     }
-    var imgDefaultObject = new Image();
-    imgDefaultObject.src = uploadImgAttr.image;
-    uploadImgAttr.height = imgDefaultObject.height * uploadImgAttr.width / imgDefaultObject.width;
-    uploadImgAttr.defaultHeight = uploadImgAttr.height;
     var frameAttr = {
         width: 325,
         height: 204,
@@ -23,10 +19,6 @@
     });
     var ne = nw.clone();
     var se = nw.clone();
-    $('.editor-object').css({
-        width: uploadImgAttr.width,
-        height: uploadImgAttr.height,
-    });
 
     function initDraggable() {
         $('.editor-object').draggable({
@@ -52,9 +44,7 @@
                 uploadImgAttr.left = ui.position.left;
                 uploadImgAttr.top = ui.position.top;
             },
-            stop: function() {
-                // $(this).css('opacity', '1');
-            },
+            stop: function() {},
             cursor: "move",
             // containment: "#editor-content",
             scroll: false,
@@ -110,6 +100,10 @@
             left: uploadImgAttr.left,
             transform: 'rotate(0deg)'
         });
+        $('.editor-object').css({
+            width: uploadImgAttr.width,
+            height: uploadImgAttr.height,
+        });
     }
     /**
      * set image origin
@@ -154,9 +148,15 @@
     /**
      * init
      */
-    setImage();
-    setPosition();
-    initDraggable();
+    var imgDefaultObject = new Image();
+    imgDefaultObject.src = uploadImgAttr.image;
+    imgDefaultObject.onload = function() {
+        uploadImgAttr.height = this.height * uploadImgAttr.width / this.width;
+        uploadImgAttr.defaultHeight = uploadImgAttr.height;
+        setImage();
+        setPosition();
+        initDraggable();
+    }
     /**
      * event
      */

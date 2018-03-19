@@ -144,3 +144,9 @@ button:focus {
 .ui-dialog {
     top: 75px !important;
 }
+.ui-resizable-e {
+    right: 0;
+}
+.ui-resizable-s {
+    bottom: 0;
+}
