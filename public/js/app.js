@@ -2,13 +2,16 @@
     var recoupLeft = 0;
     var recoupTop = 0;
     var uploadImgAttr = {
-        width: 380,
-        height: 270,
+        width: 400,
         top: 0,
         left: 0,
         rotate: 0,
         image: 'public/images/default.jpg'
     }
+    var imgDefaultObject = new Image();
+    imgDefaultObject.src = uploadImgAttr.image;
+    uploadImgAttr.height = imgDefaultObject.height * uploadImgAttr.width / imgDefaultObject.width;
+    uploadImgAttr.defaultHeight = uploadImgAttr.height;
     var frameAttr = {
         width: 325,
         height: 204,
@@ -28,8 +31,6 @@
     function initDraggable() {
         $('.editor-object').draggable({
             start: function(event, ui) {
-                // $(this).css('opacity', '0.3');
-                //
                 var left = parseInt($(this).css('left'), 10);
                 left = isNaN(left) ? 0 : left;
                 var top = parseInt($(this).css('top'), 10);
@@ -55,7 +56,7 @@
                 // $(this).css('opacity', '1');
             },
             cursor: "move",
-            containment: "#editor-content",
+            // containment: "#editor-content",
             scroll: false,
             cancel: ".ui-rotatable-handle"
         });
@@ -136,16 +137,8 @@
             }
         });
     }
-    /**
-     * init
-     */
-    setImage();
-    setPosition();
-    initDraggable();
-    /**
-     * event
-     */
-    $('.btn-restore').on('click', function() {
+
+    function restore() {
         $('.editor-upload, .editor-object-rero, .editor-object').css({
             width: uploadImgAttr.width,
             height: uploadImgAttr.height
@@ -157,6 +150,20 @@
         $('.file-ext').val('jpg');
         $('.file-zoom').val('2');
         $('.editor-object-rero').css('transform', 'rotate(' + 0 + 'deg)').data('uiRotatable').angle(0);
+    }
+    /**
+     * init
+     */
+    setImage();
+    setPosition();
+    initDraggable();
+    /**
+     * event
+     */
+    $('.btn-restore').on('click', function() {
+        uploadImgAttr.height = uploadImgAttr.defaultHeight;
+        $('#file-input').val('');
+        restore();
     });
     $('.btn-rotate').on('click', function() {
         uploadImgAttr.rotate++;
@@ -317,11 +324,13 @@
             return;
         }
         uploadImgAttr.imageObj = $(this)[0].files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            $('.btn-restore').trigger('click');
-            $('.editor-upload').find('img').attr('src', e.target.result);
+        var i = new Image();
+        i.onload = function() {
+            uploadImgAttr.height = this.height * uploadImgAttr.width / this.width;
+            restore();
+            $('.editor-upload').find('img').attr('src', this.src);
         }
-        reader.readAsDataURL(uploadImgAttr.imageObj);
+        var _URL = window.URL || window.webkitURL;
+        i.src = _URL.createObjectURL(uploadImgAttr.imageObj)
     });
 })();

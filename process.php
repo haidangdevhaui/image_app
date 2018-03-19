@@ -15,8 +15,8 @@ class ImageProcess
     /**
      *  output image property
      */
-    protected $outputImageWidth  = 325;
-    protected $outputImageHeight = 204;
+    protected $outputImageWidth  = 328;
+    protected $outputImageHeight = 206;
     protected $outputImageZoom   = 2;
     protected $outputImageFormat = 'jpg';
 
