@@ -60,8 +60,8 @@
 							<option value="webp">WEBP</option>
 						</select>
 						<select class="file-zoom">
-							<option value="2" selected>2x</option>
-							<option value="4">4x</option>
+							<option value="2">2x</option>
+							<option value="4" selected>4x</option>
 							<option value="8">8x</option>
 						</select>
 						<span class="file-output"></span>
@@ -77,6 +77,6 @@
 		<script src="public/js/jquery-ui.min.js"></script>
 		<script src="public/js/jquery.ui.rotatable.min.js"></script>
 		<script src="public/js/download.js"></script>
-		<script src="public/js/app.js"></script>
+		<script src="public/js/app.min.js"></script>
 	</body>
 </html>

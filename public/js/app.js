@@ -111,8 +111,7 @@
     function setImage() {
         $('.editor-upload').append('<img style="width: 100%; height: 100%" src="' + uploadImgAttr.image + '"/>').css({
             width: uploadImgAttr.width,
-            height: uploadImgAttr.height,
-            border: '2px solid #ea0437'
+            height: uploadImgAttr.height
         });
         $('.editor-frame').append('<img class="editor-frame-image" src="' + frameAttr.image + '"/>').css({
             width: frameAttr.width,
